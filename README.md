@@ -69,9 +69,9 @@ Comparaison des émissions de la France par rapport au total mondial afin d’an
 
 ---
 
-## 🧠 Requêtes SQL principales
+## Requêtes SQL principales
 
-### 📈 Évolution des émissions mondiales
+### Évolution des émissions mondiales
 
 ```sql
 SELECT "Année",
@@ -83,7 +83,7 @@ ORDER BY "Année";
 
 ```
 
-### 🏭 Top pays émetteurs (2024)
+### Top pays émetteurs (2024)
 
 ```sql
 SELECT "Périmètre spatial",
@@ -95,7 +95,7 @@ ORDER BY "Emissions CO2" DESC;
 
 ```
 
-### 🇫🇷 France vs Monde
+### France vs Monde
 
 ```sql
 SELECT "Année",
@@ -103,11 +103,42 @@ SELECT "Année",
        "Emissions CO2"
 FROM edf_co2
 WHERE "Périmètre spatial" IN ('France', 'Monde')
-ORDER BY "Année";
+ORDER BY "Année"; 
 
 ```
 
-## 📸 Preuves d’exécution (PostgreSQL)
+### Émissions moyennes par pays
+
+```sql
+SELECT country, AVG(co2) 
+FROM edf_co2
+GROUP BY country
+ORDER BY AVG(co2) DESC;
+
+```
+
+### Évolution dans le temps
+
+```sql
+SELECT year, SUM(co2)
+FROM edf_co2
+GROUP BY year
+ORDER BY year;
+
+```
+
+### Top pays émetteurs
+
+```sql
+SELECT country, SUM(co2)
+FROM edf_co2
+GROUP BY country
+ORDER BY SUM(co2) DESC
+LIMIT 10;
+
+```
+
+## Preuves d’exécution (PostgreSQL)
 
 ### Création de la table
 ![Create Table](visuals/create_table.png)
@@ -122,7 +153,7 @@ ORDER BY "Année";
 ### Top pays émetteurs (2024)
 ![Top Emitters](visuals/top_emitters_2024.png)
 
-## 📈 Résultats clés
+## Résultats clés
 
 - Les émissions sont concentrées sur quelques pays majeurs
 - Tendance mondiale globalement baissière
