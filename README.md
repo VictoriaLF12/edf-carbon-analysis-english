@@ -51,6 +51,8 @@ CREATE TABLE edf_co2 (
 
 ---
 
+```
+
 # Analyses réalisées
 
 ### 🌍 Évolution des émissions mondiales
@@ -80,6 +82,8 @@ WHERE "Périmètre spatial" = 'Monde'
 GROUP BY "Année"
 ORDER BY "Année";
 
+```
+
 ### 🏭 Top pays émetteurs (2024)
 
 ```sql
@@ -89,6 +93,8 @@ FROM edf_co2
 WHERE "Année" = 2024
 AND "Périmètre spatial" != 'Monde'
 ORDER BY "Emissions CO2" DESC;
+
+```
 
 ### 🇫🇷 France vs Monde
 
