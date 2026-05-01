@@ -51,7 +51,7 @@ CREATE TABLE edf_co2 (
 
 ---
 
-## Analyses réalisées
+# Analyses réalisées
 
 ### 🌍 Évolution des émissions mondiales
 Analyse de l’évolution des émissions de CO₂ du périmètre mondial sur la période 2019–2024.
