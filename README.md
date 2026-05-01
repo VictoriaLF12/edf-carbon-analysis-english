@@ -110,10 +110,10 @@ ORDER BY "Année";
 ### Émissions moyennes par pays
 
 ```sql
-SELECT country, AVG(co2) 
+SELECT "Périmètre spatial", AVG("Emissions CO2") 
 FROM edf_co2
-GROUP BY country
-ORDER BY AVG(co2) DESC;
+GROUP BY "Périmètre spatial"
+ORDER BY AVG("Emissions CO2") DESC;
 
 ```
 
@@ -130,7 +130,7 @@ ORDER BY year;
 ### Top pays émetteurs
 
 ```sql
-SELECT country, SUM(co2)
+SELECT "Périmètre spatial", SUM(co2)
 FROM edf_co2
 GROUP BY country
 ORDER BY SUM(co2) DESC
