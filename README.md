@@ -65,7 +65,7 @@ CREATE TABLE edf_co2 (
 ### 1. Évolution des émissions mondiales
 Analyse de l’évolution des émissions de CO₂ du périmètre mondial sur la période 2019–2024.
 
-### Requêtes SQL principales
+#### Requêtes SQL principales
 ```sql
 SELECT "Année",
        SUM("Emissions CO2") AS total_emissions
@@ -74,7 +74,8 @@ WHERE "Périmètre spatial" = 'Monde'
 GROUP BY "Année"
 ORDER BY "Année";
 ```
-### Preuves d’exécution (PostgreSQL)
+#### Preuves d’exécution (PostgreSQL)
+![Top Emitters](visuals/Evolution des emissions mondiales.png)
 
 ---
 
