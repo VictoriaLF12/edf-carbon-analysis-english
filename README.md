@@ -49,9 +49,8 @@ CREATE TABLE edf_co2 (
     "Consolidation method" TEXT
 );
 
----
-
 ```
+---
 
 # Analyses réalisées
 
@@ -106,3 +105,11 @@ FROM edf_co2
 WHERE "Périmètre spatial" IN ('France', 'Monde')
 ORDER BY "Année";
 
+```
+
+## 📈 Résultats clés
+
+- Les émissions sont concentrées sur quelques pays majeurs
+- Tendance mondiale globalement baissière
+- France et Italie figurent parmi les principaux contributeurs
+- Variabilité importante selon les zones géographiques
