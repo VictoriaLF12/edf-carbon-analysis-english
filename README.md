@@ -170,18 +170,28 @@ ORDER BY AVG("Emissions CO2") DESC;
 #### Preuves d’exécution (PostgreSQL)
 ![Top Emitters](visuals/emissions_moyennes_par_pays.png)
 
-### 5. Évolution dans le temps
+### 5. Variations annuelles des émissions
 
 #### Requêtes SQL principales
 ```sql
-SELECT "Année", SUM("Emissions CO2")
+SELECT 
+    "Année",
+    SUM("Emissions CO2") AS emissions_totales,
+    ROUND(
+        (
+            SUM("Emissions CO2")
+            - LAG(SUM("Emissions CO2")) OVER (ORDER BY "Année")
+        )
+        / LAG(SUM("Emissions CO2")) OVER (ORDER BY "Année")
+        * 100
+    ,2) AS variation_pct
 FROM edf_co2
 GROUP BY "Année"
 ORDER BY "Année";
 ```
 #### Preuves d’exécution (PostgreSQL)
 
-### 6. Top 10 pays émetteurs
+### 6. Top 10 des pays les plus émetteurs sur la période 2019–2024 (émissions cumulées)
 
 #### Requêtes SQL principales
 ```sql
@@ -196,9 +206,12 @@ LIMIT 10;
 
 ---
 
-## Résultats clés
+## Conclusion générale
 
-- Les émissions sont concentrées sur quelques pays majeurs
-- Tendance mondiale globalement baissière
-- France et Italie figurent parmi les principaux contributeurs
-- Variabilité importante selon les zones géographiques
+Ce projet d’analyse des émissions carbone du groupe EDF met en évidence une tendance globale à la réduction des émissions de CO₂ entre 2019 et 2024.
+
+Les analyses réalisées montrent que les émissions sont fortement concentrées sur quelques pays clés, la France représente une part importante des émissions totales du groupe et que les émissions mondiales suivent une trajectoire baissière progressive sur la période étudiée.
+
+Ce projet illustre également l’utilisation combinée de PostgreSQL, SQL et Python dans une démarche complète de data analyse appliquée aux enjeux ESG et climatiques.
+
+Au-delà des résultats techniques, cette étude permet de mieux comprendre la répartition géographique des émissions carbone et les dynamiques de transition énergétique au sein d’un grand groupe international.
