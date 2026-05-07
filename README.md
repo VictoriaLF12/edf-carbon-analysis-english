@@ -176,15 +176,11 @@ ORDER BY AVG("Emissions CO2") DESC;
 ```sql
 SELECT 
     "Année",
-    SUM("Emissions CO2") AS emissions_totales,
-    ROUND(
-        (
-            SUM("Emissions CO2")
-            - LAG(SUM("Emissions CO2")) OVER (ORDER BY "Année")
-        )
-        / LAG(SUM("Emissions CO2")) OVER (ORDER BY "Année")
-        * 100
-    ,2) AS variation_pct
+    ROUND(SUM("Emissions CO2")::numeric,2) AS emissions_totales,
+
+    ROUND(((SUM("Emissions CO2")
+	        - LAG(SUM("Emissions CO2"))OVER (ORDER BY "Année"))
+			/LAG(SUM("Emissions CO2"))OVER (ORDER BY "Année"))::numeric * 100,2) AS variation_pct
 FROM edf_co2
 GROUP BY "Année"
 ORDER BY "Année";
