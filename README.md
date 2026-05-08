@@ -6,7 +6,9 @@ Projet d’analyse des émissions de CO₂ du groupe EDF par pays et par année,
 
 ---
 
-## Objectif du projet
+## 1. Présentation du projet
+
+### Objectif du projet
 
 Ce projet a pour objectif de :
 
@@ -16,7 +18,7 @@ Ce projet a pour objectif de :
 
 ---
 
-## Technologies utilisées
+## 2. Technologies utilisées
 
 | Outil | Utilisation |
 |------|------------|
@@ -27,11 +29,9 @@ Ce projet a pour objectif de :
 
 ---
 
-## Architecture du projet
+## 3. Import et structuration des données
 
----
-
-## Base de données
+### Base de données
 
 Les données ont été importées dans une base PostgreSQL avec la structure suivante :
 
@@ -59,7 +59,11 @@ CREATE TABLE edf_co2 (
 
 ---
 
-## Analyses réalisées
+## 4. Nettoyage des données
+
+---
+
+## 5. Analyses réalisées
 
 ### 1. Évolution des émissions mondiales
 Analyse de l’évolution des émissions de CO₂ du périmètre mondial sur la période 2019–2024.
@@ -213,7 +217,11 @@ LIMIT 10;
 
 ---
 
-## Conclusion générale
+## 6. Visualisations Python
+
+---
+
+## 7. Conclusion générale
 
 Ce projet d’analyse des émissions carbone du groupe EDF met en évidence une tendance globale à la réduction des émissions de CO₂ entre 2019 et 2024.
 
