@@ -52,10 +52,10 @@ CREATE TABLE edf_co2 (
 ### Preuves d’exécution (PostgreSQL)
 
 #### Création de la table
-![Create Table](visuals/create_table.png)
+![PostgreSQL Table Creation](visuals/create_table.png)
 
 #### Import des données CSV
-![Import CSV](visuals/import_csv.png)
+![CSV Import into PostgreSQL](visuals/import_csv.png)
 
 ---
 
@@ -77,7 +77,7 @@ WHERE "Emissions CO2" IS NULL
 
 #### Résultat
 
-![Create Table](visuals/null_values_check.png)
+![NULL Values Quality Check](visuals/null_values_check.png)
 
 Aucune valeur NULL n’a été détectée dans les colonnes analysées.
 
@@ -102,7 +102,7 @@ HAVING COUNT(*) > 1;
 
 #### Résultat
 
-![Create Table](visuals/duplicate_check.png)
+![Duplicate Records Check](visuals/duplicate_check.png)
 
 Aucun doublon n’a été identifié dans les données.
 
@@ -124,7 +124,7 @@ WHERE "Emissions CO2" < 0;
 
 #### Résultat
 
-![Create Table](visuals/negative_values_check.png)
+![Negative Values Detection](visuals/negative_values_check.png)
 
 Aucune valeur négative n’a été détectée.
 
@@ -147,7 +147,7 @@ ORDER BY "Année";
 
 #### Résultat
 
-![Create Table](visuals/years_check.png)
+![Available Years Validation](visuals/years_check.png)
 
 Les données couvrent bien l’ensemble de la période 2019–2024.
 
@@ -168,7 +168,7 @@ FROM edf_co2;
 ```
 #### Résultat
 
-![Create Table](visuals/units_check.png)
+![Measurement Units Consistency Check](visuals/units_check.png)
 
 Toutes les données sont exprimées en ktonnes.
 
@@ -196,7 +196,7 @@ Les émissions mondiales diminuent progressivement entre 2019 et 2024.
 
 #### Interprétation
 
-![Create Table](visuals/extreme_values_check.png)
+![Extreme Emissions Values Analysis](visuals/extreme_values_check.png)
 
 Les valeurs observées restent cohérentes avec le périmètre étudié et mettent en évidence le poids du périmètre mondial dans les émissions du groupe EDF, ainsi qu’une tendance globale à la réduction des émissions carbone sur la période analysée.
 
@@ -214,14 +214,14 @@ ORDER BY "Périmètre spatial";
 
 #### Incohérences détectées
 
-![Create Table](visuals/data_inconsistencies_detected.png)
+![Spatial Perimeter Inconsistencies](visuals/data_inconsistencies_detected.png)
 
 Une anomalie de nommage a été identifiée concernant la Chine. Nous avons République populaire de Chine et République Populaire de Chine (différence causée par une majuscule "P"). Ces deux valeurs représentaient le même pays mais étaient interprétées comme deux catégories différentes par PostgreSQL.
 Cela peut entraîner des doublons dans les analyses, des moyennes incorrectes et des erreurs dans les classements des pays émetteurs.
 
 #### Correction appliquée
 
-![Create Table](visuals/data_correction_applied.png)
+![Data Normalization Correction Applied](visuals/data_correction_applied.png)
 
 Une opération de normalisation des données a été réalisée afin d’unifier les libellés.
 
@@ -243,7 +243,7 @@ FROM edf_co2
 ORDER BY "Périmètre spatial";
 ```
 
-![Create Table](visuals/post_correction_verification.png)
+![Post-Correction Verification](visuals/post_correction_verification.png)
 
 #### Conclusion
 
@@ -267,7 +267,7 @@ GROUP BY "Année"
 ORDER BY "Année";
 ```
 #### Preuves d’exécution (PostgreSQL)
-![Top Emitters](visuals/evolution_des_emissions_mondiales.png)
+![Global CO2 Emissions Trend 2019-2024](visuals/evolution_des_emissions_mondiales.png)
 
 #### Interprétation des résultats
 
@@ -296,7 +296,7 @@ ORDER BY "Emissions CO2" DESC;
 ```
 
 #### Preuves d’exécution (PostgreSQL)
-![Top Emitters](visuals/top_emitters_2024.png)
+![Top CO2 Emitting Countries in 2024](visuals/top_emitters_2024.png)
 
 #### Interprétation des résultats
 
@@ -336,7 +336,7 @@ FROM emissions
 ORDER BY "Année";
 ```
 #### Preuves d’exécution (PostgreSQL)
-![Top Emitters](visuals/france_vs_monde.png)
+![France vs Global Emissions Comparison](visuals/france_vs_monde.png)
 
 #### Interprétation des résultats
 
@@ -360,7 +360,7 @@ ORDER BY AVG("Emissions CO2") DESC;
 
 ```
 #### Preuves d’exécution (PostgreSQL)
-![Top Emitters](visuals/emissions_moyennes_par_pays.png)
+![Average CO2 Emissions by Country](visuals/emissions_moyennes_par_pays.png)
 
 ### 5.5. Variations annuelles des émissions
 
@@ -379,7 +379,7 @@ ORDER BY "Année";
 ```
 
 #### Preuves d’exécution (PostgreSQL)
-![Top Emitters](visuals/Variations_annuelles_des_émissions.png)
+![Annual CO2 Emissions Variations](visuals/Variations_annuelles_des_emissions.png)
 
 #### Interprétation des résultats
 
@@ -402,7 +402,7 @@ ORDER BY SUM("Emissions CO2") DESC
 LIMIT 10;
 ```
 #### Preuves d’exécution (PostgreSQL)
-![Top Emitters](visuals/top_10_emitters_2024.png)
+![Top 10 Cumulative Emitters 2019-2024](visuals/top_10_emitters_2024.png)
 
 ---
 
