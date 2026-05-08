@@ -75,6 +75,16 @@ WHERE "Emissions CO2" IS NULL
    OR "Périmètre spatial" IS NULL;
 ```
 
+#### Résultat
+
+null-values-check.png
+
+Aucune valeur NULL n’a été détectée dans les colonnes analysées.
+
+#### Interprétation
+
+Les données importées sont complètes et exploitables pour les analyses statistiques et temporelles.
+
 ### 4.2. Vérification des doublons
 
 #### Objectif : Détecter des lignes importées plusieurs fois.
@@ -90,6 +100,16 @@ GROUP BY "Année", "Périmètre spatial"
 HAVING COUNT(*) > 1;
 ```
 
+#### Résultat
+
+duplicate-check.png
+
+Aucun doublon n’a été identifié dans les données.
+
+#### Interprétation
+
+Chaque combinaison année/périmètre spatial apparaît une seule fois dans la base, garantissant la cohérence des analyses.
+
 ### 4.3. Vérification des valeurs négatives
 
 #### Objectif : Détecter des valeurs incohérentes.
@@ -101,6 +121,16 @@ SELECT *
 FROM edf_co2
 WHERE "Emissions CO2" < 0;
 ```
+
+#### Résultat
+
+negative-values-check.png
+
+Aucune valeur négative n’a été détectée.
+
+#### Interprétation
+
+Les données d’émissions carbone présentent des valeurs cohérentes et compatibles avec les analyses environnementales réalisées.
 
 ### 4.4. Vérification des années disponibles
 
@@ -115,6 +145,15 @@ FROM edf_co2
 ORDER BY "Année";
 ```
 
+#### Résultat
+
+years-check.png
+
+Les données couvrent bien l’ensemble de la période 2019–2024.
+
+#### Interprétation
+
+La continuité temporelle des données permet de réaliser des analyses d’évolution fiables sur plusieurs années.
 
 ### 4.5. Vérification des unités
 
@@ -127,6 +166,15 @@ Cette étape permet de vérifier l’homogénéité des unités de mesure afin d
 SELECT DISTINCT "Unité"
 FROM edf_co2;
 ```
+#### Résultat
+
+units-check.png
+
+Toutes les données sont exprimées en ktonnes.
+
+#### Interprétation
+
+L’uniformité des unités garantit la cohérence des comparaisons entre pays et années.
 
 ### 4.6. Vérification des valeurs extrêmes
 
@@ -140,6 +188,17 @@ FROM edf_co2
 ORDER BY "Emissions CO2" DESC
 LIMIT 10;
 ```
+
+#### Résultat
+
+Les valeurs les plus élevées correspondent principalement au périmètre mondial (Monde) et à la France par la suite.
+Les émissions mondiales diminuent progressivement entre 2019 et 2024.
+
+#### Interprétation
+
+extreme-values-check.png
+
+Les valeurs observées restent cohérentes avec le périmètre étudié et mettent en évidence le poids du périmètre mondial dans les émissions du groupe EDF, ainsi qu’une tendance globale à la réduction des émissions carbone sur la période analysée.
 
 ### 4.7. Vérification des périmètres spatiaux
 
