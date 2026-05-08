@@ -13,7 +13,6 @@ Ce projet a pour objectif de :
 - Analyser les émissions de CO₂ du groupe EDF
 - Identifier les pays les plus émetteurs
 - Étudier l’évolution des émissions dans le temps
-- Illustrer une démarche complète d’analyse de données (SQL + Python + PostgreSQL)
 
 ---
 
