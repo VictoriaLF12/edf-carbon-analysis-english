@@ -184,7 +184,9 @@ FROM edf_co2
 GROUP BY "Année"
 ORDER BY "Année";
 ```
+
 #### Preuves d’exécution (PostgreSQL)
+![Top Emitters](visuals/Variations_annuelles_des_ émissions.png)
 
 #### Interprétation des résultats
 
