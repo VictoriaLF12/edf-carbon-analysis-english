@@ -65,7 +65,7 @@ CREATE TABLE edf_co2 (
 
 ## 5. Analyses réalisées
 
-### 1. Évolution des émissions mondiales
+### 5.1. Évolution des émissions mondiales
 Analyse de l’évolution des émissions de CO₂ du périmètre mondial sur la période 2019–2024.
 
 #### Requêtes SQL principales
@@ -92,7 +92,7 @@ Sur la période 2019–2024, le périmètre mondial analysé montre une tendance
 
 ---
 
-### 2. Top pays émetteurs (2024)
+### 5.2. Top pays émetteurs (2024)
 Identification des pays les plus émetteurs de CO₂ en 2024 (hors périmètre global).
 
 ### Requêtes SQL principales
@@ -123,7 +123,7 @@ Les émissions élevées observées en Italie et en Chine peuvent s’expliquer 
 
 Globalement, les résultats montrent que les émissions carbone du groupe EDF ne sont pas réparties uniformément entre les différents pays d’implantation. Quelques zones géographiques concentrent une part majeure des émissions totales du groupe.
 
-### 3. France vs Monde
+### 5.3. France vs Monde
 Comparaison des émissions de la France par rapport au total mondial afin d’analyser son poids relatif.
 
 #### Requêtes SQL principales
@@ -160,7 +160,7 @@ Cette concentration peut s’expliquer par l’importance historique du marché 
 
 Les résultats suggèrent également qu’EDF a engagé une trajectoire globale de réduction carbone entre 2019 et 2024, potentiellement liée aux politiques de transition énergétique, à l’évolution du mix énergétique, à la fermeture progressive de certaines activités fortement émettrices ou à l’amélioration des performances environnementales.
 
-### 4. Émissions moyennes par pays
+### 5.4. Émissions moyennes par pays
 
 #### Requêtes SQL principales
 ```sql
@@ -173,7 +173,7 @@ ORDER BY AVG("Emissions CO2") DESC;
 #### Preuves d’exécution (PostgreSQL)
 ![Top Emitters](visuals/emissions_moyennes_par_pays.png)
 
-### 5. Variations annuelles des émissions
+### 5.5. Variations annuelles des émissions
 
 #### Requêtes SQL principales
 ```sql
@@ -202,7 +202,7 @@ En 2024, la baisse se poursuit mais à un rythme plus modéré, suggérant une p
 #### Conclusion
 Sur la période étudiée, EDF présente une trajectoire de réduction carbone nette et structurée, avec une accélération des efforts à partir de 2022. Cette évolution peut être interprétée comme le résultat combiné de politiques de transition énergétique, d’optimisation des opérations et de transformation progressive du mix énergétique du groupe.
 
-### 6. Top 10 des pays les plus émetteurs sur la période 2019–2024 (émissions cumulées)
+### 5.6. Top 10 des pays les plus émetteurs sur la période 2019–2024 (émissions cumulées)
 
 #### Requêtes SQL principales
 ```sql
