@@ -77,7 +77,7 @@ WHERE "Emissions CO2" IS NULL
 
 #### Résultat
 
-null-values-check.png
+![Create Table](null-values-check.png)
 
 Aucune valeur NULL n’a été détectée dans les colonnes analysées.
 
@@ -102,7 +102,7 @@ HAVING COUNT(*) > 1;
 
 #### Résultat
 
-duplicate-check.png
+![Create Table](duplicate-check.png)
 
 Aucun doublon n’a été identifié dans les données.
 
@@ -124,7 +124,7 @@ WHERE "Emissions CO2" < 0;
 
 #### Résultat
 
-negative-values-check.png
+![Create Table](negative-values-check.png)
 
 Aucune valeur négative n’a été détectée.
 
@@ -147,7 +147,7 @@ ORDER BY "Année";
 
 #### Résultat
 
-years-check.png
+![Create Table](years-check.png)
 
 Les données couvrent bien l’ensemble de la période 2019–2024.
 
@@ -168,7 +168,7 @@ FROM edf_co2;
 ```
 #### Résultat
 
-units-check.png
+![Create Table](units-check.png)
 
 Toutes les données sont exprimées en ktonnes.
 
@@ -196,7 +196,7 @@ Les émissions mondiales diminuent progressivement entre 2019 et 2024.
 
 #### Interprétation
 
-extreme-values-check.png
+![Create Table](extreme-values-check.png)
 
 Les valeurs observées restent cohérentes avec le périmètre étudié et mettent en évidence le poids du périmètre mondial dans les émissions du groupe EDF, ainsi qu’une tendance globale à la réduction des émissions carbone sur la période analysée.
 
@@ -214,16 +214,14 @@ ORDER BY "Périmètre spatial";
 
 #### Incohérences détectées
 
-Une anomalie de nommage a été identifiée concernant la Chine :
+![Create Table](data_inconsistencies_detected.png)
 
-République populaire de Chine
-République Populaire de Chine
-
-Ces deux valeurs représentaient le même pays mais étaient interprétées comme deux catégories différentes par PostgreSQL.
-
+Une anomalie de nommage a été identifiée concernant la Chine. Nous avons République populaire de Chine et République Populaire de Chine (différence causée par une majuscule "P"). Ces deux valeurs représentaient le même pays mais étaient interprétées comme deux catégories différentes par PostgreSQL.
 Cela peut entraîner des doublons dans les analyses, des moyennes incorrectes et des erreurs dans les classements des pays émetteurs.
 
 #### Correction appliquée
+
+![Create Table](data_correction_applied.png)
 
 Une opération de normalisation des données a été réalisée afin d’unifier les libellés.
 
@@ -244,6 +242,8 @@ SELECT DISTINCT "Périmètre spatial"
 FROM edf_co2
 ORDER BY "Périmètre spatial";
 ```
+
+![Create Table](post_correction_verification.png)
 
 #### Conclusion
 
