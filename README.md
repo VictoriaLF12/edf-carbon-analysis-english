@@ -45,9 +45,13 @@ Ce projet a pour objectif de :
 ### Data Description
 
 Source : Open Data EDF
+
 Périmètre : émissions de CO₂ consolidées par pays
+
 Période : 2019 → 2024
+
 Unité : ktonnes CO₂
+
 Niveau : groupe EDF (périmètre international)
 
 ### Base de données
