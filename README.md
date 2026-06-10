@@ -2,61 +2,61 @@
 
 # EDF Carbon Emissions Analysis (2019–2024)
 
-Projet d’analyse des émissions de CO₂ du groupe EDF par pays et par année, basé sur des données Open Data.
+End-to-end data analysis project exploring EDF Group's CO₂ emissions trends across countries and over time (2019–2024), using Open Data, PostgreSQL, SQL, and Python.
 
 ## Executive Summary
 
-Ce projet analyse les émissions de CO₂ du groupe EDF sur la période 2019–2024 afin d’identifier les dynamiques de réduction carbone, la répartition géographique des émissions et les principaux contributeurs.
+This project analyzes EDF Group’s CO₂ emissions over the 2019–2024 period in order to identify carbon reduction trends, the geographical distribution of emissions, and the main contributing countries.
 
 ### Key Insights
-- Les émissions totales d’EDF diminuent d’environ 48 % sur la période 2019–2024
-- La France représente en moyenne 40 à 45 % des émissions totales du groupe
-- Les émissions sont fortement concentrées sur un nombre limité de pays
-- Une accélération de la baisse est observée à partir de 2022
-- La trajectoire globale suggère une transition progressive vers un mix énergétique moins carboné
+- EDF's total CO₂ emissions decreased by approximately 48% between 2019 and 2024.
+- France accounted for approximately 40–45% of the Group's total emissions over the period.
+- Emissions are highly concentrated in a limited number of countries.
+- The decline in emissions accelerated from 2022 onwards.
+- The overall trend suggests a gradual transition toward a lower-carbon energy mix.
 
 ---
 
-## 1. Présentation du projet
+## 1. Project Overview
 
-### Objectif du projet
+### Project Objective
 
-Ce projet a pour objectif de :
+The objective of this project is to:
 
-- Analyser les émissions de CO₂ du groupe EDF
-- Identifier les pays les plus émetteurs
-- Étudier l’évolution des émissions dans le temps
+- Analyze EDF Group's CO₂ emissions
+- Identify the highest-emitting countries
+- Study emission trends over time
 
 ---
 
-## 2. Technologies utilisées
+## 2. Technologies Used
 
-| Outil | Utilisation |
+| Tool | Purpose |
 |------|------------|
-| PostgreSQL | Stockage et requêtes sur les données |
-| SQL | Analyse et exploration des données |
-| Python | Visualisation des données |
-| GitHub | Versioning et portfolio |
+| PostgreSQL | Data storage and querying |
+| SQL | Data analysis and exploration |
+| Python | Data visualization |
+| GitHub | Versioning and portfolio |
 
 ---
 
-## 3. Import et structuration des données
+## 3. Data import and structuring
 
 ### Data Description
 
-Source : Open Data EDF
+Source: Open Data EDF
 
-Périmètre : émissions de CO₂ consolidées par pays
+Scope: émissions de CO₂ consolidées par pays
 
-Période : 2019 → 2024
+Period: 2019 → 2024
 
-Unité : ktonnes CO₂
+Unit: ktonnes CO₂
 
-Niveau : groupe EDF (périmètre international)
+Level: groupe EDF (périmètre international)
 
-### Base de données
+### Database
 
-Les données ont été importées dans une base PostgreSQL avec la structure suivante :
+The data was imported into a PostgreSQL database with the following structure:
 
 ```sql
 CREATE TABLE edf_co2 (
@@ -72,25 +72,25 @@ CREATE TABLE edf_co2 (
 );
 
 ```
-### Preuves d’exécution (PostgreSQL)
+### Execution Evidence (PostgreSQL)
 
-#### Création de la table
+#### Table Creation
 ![PostgreSQL Table Creation](visuals/create_table.png)
 
-#### Import des données CSV
+#### CSV Data Import
 ![CSV Import into PostgreSQL](visuals/import_csv.png)
 
 ---
 
-## 4. Nettoyage des données
+## 4. Data Cleaning
 
-### 4.1. Vérification des valeurs NULL
+### 4.1. Missing Values Check
 
-#### Objectif : Détecter les données manquantes. 
-Cette vérification permet d’identifier les lignes incomplètes pouvant fausser les analyses statistiques et les agrégations SQL.
+#### Objective : Missing Values Check
+Identify missing data that could bias statistical analyses and SQL aggregations.
 
-#### Requête SQL
-Les données contiennent-elles des valeurs manquantes susceptibles de fausser les analyses ?
+#### SQL Query
+Do the data contain missing values that could affect the analysis?
 ```sql
 SELECT *
 FROM edf_co2
@@ -99,15 +99,15 @@ WHERE "Emissions CO2" IS NULL
    OR "Périmètre spatial" IS NULL;
 ```
 
-#### Résultat
+#### Result
 
 ![NULL Values Quality Check](visuals/null_values_check.png)
 
-Aucune valeur NULL n’a été détectée dans les colonnes analysées.
+No NULL values were detected in the analyzed columns.
 
-#### Interprétation
+#### Interpretation
 
-Les données importées sont complètes et exploitables pour les analyses statistiques et temporelles.
+The dataset is complete and suitable for statistical and time-series analysis.
 
 ### 4.2. Vérification des doublons
 
