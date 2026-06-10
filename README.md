@@ -109,13 +109,13 @@ No NULL values were detected in the analyzed columns.
 
 The dataset is complete and suitable for statistical and time-series analysis.
 
-### 4.2. Vérification des doublons
+### 4.2. Duplicate checking
 
-#### Objectif : Détecter des lignes importées plusieurs fois.
-Cette analyse permet d’identifier d’éventuels doublons dans les données importées afin d’éviter une surestimation des émissions.
+#### Objective : Detect duplicate imports
+This analysis aims to identify potential duplicates in the imported data in order to avoid overestimation of emissions.
 
-#### Requête SQL
-Certaines lignes ont-elles été importées plusieurs fois dans la base de données ?
+#### SQL Query
+Have any rows been imported multiple times into the database?
 ```sql
 SELECT "Année",
        "Périmètre spatial",
@@ -125,90 +125,90 @@ GROUP BY "Année", "Périmètre spatial"
 HAVING COUNT(*) > 1;
 ```
 
-#### Résultat
+#### Result
 
 ![Duplicate Records Check](visuals/duplicate_check.png)
 
-Aucun doublon n’a été identifié dans les données.
+No duplicates were identified in the data.
 
-#### Interprétation
+#### Interpretation
 
-Chaque combinaison année/périmètre spatial apparaît une seule fois dans la base, garantissant la cohérence des analyses.
+Each year/spatial boundary combination appears only once in the database, ensuring the consistency of the analysis.
 
-### 4.3. Vérification des valeurs négatives
+### 4.3. Negative Values Check
 
-#### Objectif : Détecter des valeurs incohérentes.
-Les émissions carbone étant des valeurs positives, cette vérification permet d’identifier d’éventuelles erreurs de saisie ou anomalies dans les données.
+#### Objective : Detect inconsistent values
+Since carbon emissions are positive values, this check helps identify potential data entry errors or anomalies in the dataset.
 
-#### Requête SQL
-Existe-t-il des valeurs d’émissions incohérentes ou négatives dans les données ?
+#### SQL Query
+Are there any inconsistent or negative emission values in the dataset?
 ```sql
 SELECT *
 FROM edf_co2
 WHERE "Emissions CO2" < 0;
 ```
 
-#### Résultat
+#### Result
 
 ![Negative Values Detection](visuals/negative_values_check.png)
 
-Aucune valeur négative n’a été détectée.
+No negative values were detected.
 
-#### Interprétation
+#### Interpretation
 
-Les données d’émissions carbone présentent des valeurs cohérentes et compatibles avec les analyses environnementales réalisées.
+The carbon emissions data shows consistent values that are compatible with the environmental analyses performed.
 
-### 4.4. Vérification des années disponibles
+### 4.4. Available Years Check
 
-#### Objectif : Contrôler la période étudiée.
-Cette vérification confirme que les données couvrent correctement la période d’étude 2019–2024.
+#### Objective : Verify the study period
+This check confirms that the data correctly covers the study period 2019–2024.
 
-#### Requête SQL
-Les données couvrent-elles correctement toute la période d’étude 2019–2024 ?
+#### SQL Query
+Do the data correctly cover the entire 2019–2024 study period?
 ```sql
 SELECT DISTINCT "Année"
 FROM edf_co2
 ORDER BY "Année";
 ```
 
-#### Résultat
+#### Result
 
 ![Available Years Validation](visuals/years_check.png)
 
-Les données couvrent bien l’ensemble de la période 2019–2024.
+The dataset covers the entire period from 2019 to 2024.
 
-#### Interprétation
+#### Interpretation
 
-La continuité temporelle des données permet de réaliser des analyses d’évolution fiables sur plusieurs années.
+The continuity of the dataset allows reliable trend analysis over time.
 
-### 4.5. Vérification des unités
+### 4.5. Units Consistency Check
 
-#### Objectif : S’assurer que toutes les émissions utilisent la même unité.
-Cette étape permet de vérifier l’homogénéité des unités de mesure afin d’assurer la cohérence des comparaisons entre pays et années.
+#### Objective : Ensure that all emissions are reported using the same unit of measurement.
+This check ensures that all variables are expressed in consistent and appropriate units in order to guarantee the reliability and comparability of the results.
 
-##### Requête SQL
-Toutes les émissions sont-elles exprimées dans la même unité de mesure ?
+##### SQL Query
+Are all emissions expressed using the same unit?
 ```sql
 SELECT DISTINCT "Unité"
 FROM edf_co2;
 ```
-#### Résultat
+#### Result
 
 ![Measurement Units Consistency Check](visuals/units_check.png)
 
-Toutes les données sont exprimées en ktonnes.
+All data are reported in kilotonnes (ktCO₂).
 
-#### Interprétation
+#### Interpretation
 
-L’uniformité des unités garantit la cohérence des comparaisons entre pays et années.
+The consistency of measurement units ensures reliable comparisons across countries and years.
 
-### 4.6. Vérification des valeurs extrêmes
+### 4.6. Verification of extreme values
 
-#### Objectif : Identifier des émissions anormalement élevées.
-Cette analyse permet de repérer les périmètres géographiques les plus fortement émetteurs ainsi que d’éventuelles anomalies statistiques.
+#### Objective : Identify unusually high emission values.
+This analysis helps identify the spatial perimeter with the highest emissions, as well as any potential statistical anomalies.
 
-#### Requête SQL
-Quels sont les périmètres géographiques présentant les émissions les plus élevées ?
+#### SQL Query
+Which spatial perimeter have the highest emissions?
 ```sql
 SELECT *
 FROM edf_co2
@@ -216,42 +216,45 @@ ORDER BY "Emissions CO2" DESC
 LIMIT 10;
 ```
 
-#### Résultat
+#### Result
 
-Les valeurs les plus élevées correspondent principalement au périmètre mondial (Monde) et à la France par la suite.
-Les émissions mondiales diminuent progressivement entre 2019 et 2024.
+The highest values mainly correspond to the global scope ("World"), followed by France.
+Global emissions gradually declined between 2019 and 2024.
 
-#### Interprétation
+#### Interpretation
 
 ![Extreme Emissions Values Analysis](visuals/extreme_values_check.png)
 
-Les valeurs observées restent cohérentes avec le périmètre étudié et mettent en évidence le poids du périmètre mondial dans les émissions du groupe EDF, ainsi qu’une tendance globale à la réduction des émissions carbone sur la période analysée.
+The observed values are consistent with the scope of the study and highlight the significant contribution of the global perimeter and the overall downward trend in EDF's carbon emissions.
 
-### 4.7. Vérification des périmètres spatiaux
+### 4.7. Spatial Perimeter Consistency Check
 
-#### Objectif : Identifier les incohérences de nommage.
-Les différentes valeurs du champ "Périmètre spatial" ont été contrôlées afin d’identifier d’éventuelles incohérences de nommage.
+#### Objective : Identify naming inconsistencies.
+The different values in the "Spatial Perimeter" field were reviewed to identify any potential naming inconsistencies.
 
-#### Requête SQL
-Existe-t-il des incohérences de nommage dans les pays ou périmètres spatiaux ?
+#### SQL Query
+Are there any naming inconsistencies across countries or geographical scopes?
 ```sql
 SELECT DISTINCT "Périmètre spatial"
 FROM edf_co2
 ORDER BY "Périmètre spatial";
 ```
 
-#### Incohérences détectées
+#### Detected Inconsistencies
 
 ![Spatial Perimeter Inconsistencies](visuals/data_inconsistencies_detected.png)
 
-Une anomalie de nommage a été identifiée concernant la Chine. Nous avons République populaire de Chine et République Populaire de Chine (différence causée par une majuscule "P"). Ces deux valeurs représentaient le même pays mais étaient interprétées comme deux catégories différentes par PostgreSQL.
-Cela peut entraîner des doublons dans les analyses, des moyennes incorrectes et des erreurs dans les classements des pays émetteurs.
+A naming inconsistency was identified for China.
 
-#### Correction appliquée
+The values "People's Republic of China" and "People's republic of China" differed only because of capitalization and were therefore treated as separate categories by PostgreSQL.
+
+This issue could lead to duplicate analyses, incorrect averages and misleading country rankings.
+
+#### Correction Applied
 
 ![Data Normalization Correction Applied](visuals/data_correction_applied.png)
 
-Une opération de normalisation des données a été réalisée afin d’unifier les libellés.
+A data normalization procedure was performed to standardize country labels.
 
 ```sql
 Requête SQL
@@ -260,10 +263,9 @@ SET "Périmètre spatial" = 'République populaire de Chine'
 WHERE "Périmètre spatial" = 'République Populaire de Chine';
 ```
 
-#### Vérification après correction
+#### Verification After Correction
 
-Une nouvelle vérification des valeurs distinctes a été effectuée afin de confirmer la cohérence des données.
-
+A new validation was performed to confirm data consistency.
 ```sql
 Requête SQL
 SELECT DISTINCT "Périmètre spatial"
@@ -275,18 +277,17 @@ ORDER BY "Périmètre spatial";
 
 #### Conclusion
 
-Cette étape de nettoyage a permis d’améliorer la qualité et la fiabilité des analyses réalisées dans le projet.
-Elle illustre également l’importance de la préparation des données dans une démarche de data analyse appliquée aux données ESG et environnementales.
+This cleaning process improved the quality and reliability of the analysis and illustrates the importance of data preparation in ESG and environmental analytics projects.
 
 ---
 
-## 5. Analyses réalisées
+## 5. Analyses Performed
 
-### 5.1. Évolution des émissions mondiales
-Analyse de l’évolution des émissions de CO₂ du périmètre mondial sur la période 2019–2024.
+### 5.1. Global Emissions Trend
+Analysis of EDF Group's global CO₂ emissions between 2019 and 2024.
 
-#### Requêtes SQL principales
-Comment les émissions mondiales de CO₂ du groupe EDF évoluent-elles entre 2019 et 2024 ?
+#### Main SQL Query
+How did EDF Group's global CO₂ emissions evolve between 2019 and 2024?
 ```sql
 SELECT "Année",
        SUM("Emissions CO2") AS total_emissions
@@ -298,7 +299,7 @@ ORDER BY "Année";
 #### Preuves d’exécution (PostgreSQL)
 ![Global CO2 Emissions Trend 2019-2024](visuals/evolution_des_emissions_mondiales.png)
 
-#### Interprétation des résultats
+#### Interpretation
 
 On observe une réduction progressive et continue des émissions de CO₂ sur l’ensemble de la période.
 
@@ -310,10 +311,10 @@ Sur la période 2019–2024, le périmètre mondial analysé montre une tendance
 
 ---
 
-### 5.2. Top pays émetteurs (2024)
+### 5.2. Top Emitting Countries (2024)
 Identification des pays les plus émetteurs de CO₂ en 2024 (hors périmètre global).
 
-### Requêtes SQL principales
+### Main SQL Query
 Quels sont les pays les plus émetteurs de CO₂ en 2024 au sein du groupe EDF ?
 ```sql
 SELECT "Périmètre spatial",
@@ -328,7 +329,7 @@ ORDER BY "Emissions CO2" DESC;
 #### Preuves d’exécution (PostgreSQL)
 ![Top CO2 Emitting Countries in 2024](visuals/top_emitters_2024.png)
 
-#### Interprétation des résultats
+#### Interpretation
 
 L’analyse des émissions de CO₂ du groupe EDF en 2024 met en évidence une forte concentration des émissions sur quelques pays clés.
 
@@ -369,7 +370,7 @@ ORDER BY "Année";
 #### Preuves d’exécution (PostgreSQL)
 ![France vs Global Emissions Comparison](visuals/france_vs_monde.png)
 
-#### Interprétation des résultats
+#### Interpretation
 
 L’analyse comparative entre les émissions françaises et les émissions mondiales du groupe EDF met en évidence une diminution progressive des émissions de CO₂ sur l’ensemble de la période 2019–2024.
 
@@ -414,7 +415,7 @@ ORDER BY "Année";
 #### Preuves d’exécution (PostgreSQL)
 ![Annual CO2 Emissions Variations](visuals/variations_annuelles_des_emissions.png)
 
-#### Interprétation des résultats
+#### Interpretation
 
 L’analyse de l’évolution des émissions de CO₂ du groupe EDF entre 2019 et 2024 met en évidence une tendance globale fortement baissière, avec une réduction d’environ 48 % sur la période étudiée.
 Cette diminution n’est pas linéaire. Après une forte baisse entre 2019 et 2020, les émissions se stabilisent légèrement en 2021 avant de reprendre une trajectoire descendante plus marquée à partir de 2022.
@@ -424,10 +425,10 @@ En 2024, la baisse se poursuit mais à un rythme plus modéré, suggérant une p
 #### Conclusion
 Sur la période étudiée, EDF présente une trajectoire de réduction carbone nette et structurée, avec une accélération des efforts à partir de 2022. Cette évolution peut être interprétée comme le résultat combiné de politiques de transition énergétique, d’optimisation des opérations et de transformation progressive du mix énergétique du groupe.
 
-### 5.6. Top 10 des pays les plus émetteurs sur la période 2019–2024 (émissions cumulées)
+### 5.6. Top 10 Highest-Emitting Countries (2019–2024)
 
-#### Requêtes SQL principales
-Quels pays concentrent le plus d’émissions cumulées sur l’ensemble de la période 2019–2024 ?
+#### Main SQL Query
+Which countries accounted for the highest cumulative CO₂ emissions over the 2019–2024 period?
 ```sql
 SELECT "Périmètre spatial", SUM("Emissions CO2")
 FROM edf_co2
@@ -435,21 +436,22 @@ GROUP BY "Périmètre spatial"
 ORDER BY SUM("Emissions CO2") DESC
 LIMIT 10;
 ```
+
 #### Preuves d’exécution (PostgreSQL)
 ![Top 10 Cumulative Emitters 2019-2024](visuals/top_10_emitters_2024.png)
 
 ---
 
-## 6. Visualisations Python
+## 6. Python Visualizations
 
 ---
 
-## 7. Conclusion générale
+## 7. Overall Conclusion
 
-Ce projet d’analyse des émissions carbone du groupe EDF met en évidence une tendance globale à la réduction des émissions de CO₂ entre 2019 et 2024.
+This project analyzing the EDF Group’s carbon emissions highlights an overall downward trend in CO₂ emissions between 2019 and 2024.
 
-Les analyses réalisées montrent que les émissions sont fortement concentrées sur quelques pays clés, la France représente une part importante des émissions totales du groupe et que les émissions mondiales suivent une trajectoire baissière progressive sur la période étudiée.
+The analysis shows that emissions are heavily concentrated in a few key countries. France accounts for a significant share of the Group’s total emissions, while global emissions follow a gradual downward trajectory over the period studied.
 
-Ce projet illustre également l’utilisation combinée de PostgreSQL, SQL et Python dans une démarche complète de data analyse appliquée aux enjeux ESG et climatiques.
+This project also demonstrates the combined use of PostgreSQL, SQL, and Python in a comprehensive data analysis approach applied to ESG and climate-related challenges.
 
-Au-delà des résultats techniques, cette étude permet de mieux comprendre la répartition géographique des émissions carbone et les dynamiques de transition énergétique au sein d’un grand groupe international.
+Beyond the technical results, this study provides a better understanding of the geographical distribution of carbon emissions and the dynamics of the energy transition within a large international group.
