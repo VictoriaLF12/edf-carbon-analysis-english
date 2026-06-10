@@ -257,7 +257,6 @@ This issue could lead to duplicate analyses, incorrect averages and misleading c
 A data normalization procedure was performed to standardize country labels.
 
 ```sql
-Requête SQL
 UPDATE edf_co2
 SET "Périmètre spatial" = 'République populaire de Chine'
 WHERE "Périmètre spatial" = 'République Populaire de Chine';
@@ -267,7 +266,6 @@ WHERE "Périmètre spatial" = 'République Populaire de Chine';
 
 A new validation was performed to confirm data consistency.
 ```sql
-Requête SQL
 SELECT DISTINCT "Périmètre spatial"
 FROM edf_co2
 ORDER BY "Périmètre spatial";
