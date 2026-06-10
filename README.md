@@ -46,7 +46,7 @@ The objective of this project is to:
 
 Source: Open Data EDF
 
-Scope: émissions de CO₂ consolidées par pays
+Scope: consolidated CO₂ emissions by country
 
 Period: 2019 → 2024
 
@@ -296,26 +296,26 @@ WHERE "Périmètre spatial" = 'Monde'
 GROUP BY "Année"
 ORDER BY "Année";
 ```
-#### Preuves d’exécution (PostgreSQL)
+#### Execution Evidence (PostgreSQL)
 ![Global CO2 Emissions Trend 2019-2024](visuals/evolution_des_emissions_mondiales.png)
 
 #### Interpretation
 
-On observe une réduction progressive et continue des émissions de CO₂ sur l’ensemble de la période.
+A gradual and continuous reduction in CO₂ emissions is observed over the entire period.
 
-Cette évolution peut s’expliquer par des politiques de réduction des émissions et le renforcement des obligations de reporting carbone.
+This trend may be explained by emissions reduction policies and the strengthening of carbon reporting requirements.
 
 #### Conclusion
 
-Sur la période 2019–2024, le périmètre mondial analysé montre une tendance claire à la baisse des émissions de CO₂, suggérant une amélioration progressive de la performance environnementale.
+Between 2019 and 2024, global emissions followed a clear downward trajectory, suggesting a gradual improvement in environmental performance.
 
 ---
 
 ### 5.2. Top Emitting Countries (2024)
-Identification des pays les plus émetteurs de CO₂ en 2024 (hors périmètre global).
+Identification of the highest CO₂-emitting countries in 2024 (excluding the global scope).
 
 ### Main SQL Query
-Quels sont les pays les plus émetteurs de CO₂ en 2024 au sein du groupe EDF ?
+Which countries generated the highest CO₂ emissions within EDF Group in 2024?
 ```sql
 SELECT "Périmètre spatial",
        "Emissions CO2"
@@ -326,28 +326,28 @@ ORDER BY "Emissions CO2" DESC;
 
 ```
 
-#### Preuves d’exécution (PostgreSQL)
+#### Execution Evidence (PostgreSQL)
 ![Top CO2 Emitting Countries in 2024](visuals/top_emitters_2024.png)
 
 #### Interpretation
 
-L’analyse des émissions de CO₂ du groupe EDF en 2024 met en évidence une forte concentration des émissions sur quelques pays clés.
+The analysis of EDF Group’s CO₂ emissions in 2024 highlights a strong concentration of emissions in a few key countries.
 
-La France apparaît comme le principal contributeur avec plus de 7 293 unités d’émissions, suivie par l’Italie et la Chine. Cette répartition reflète l’importance historique des activités du groupe EDF en Europe ainsi que sa présence internationale sur plusieurs marchés énergétiques.
+France appears as the main contributor with more than 7,293 emission units, followed by Italy and China. This distribution reflects both the historical importance of EDF’s activities in Europe and its international presence across multiple energy markets.
 
-Les émissions élevées observées en Italie et en Chine peuvent s’expliquer par une présence industrielle importante, des infrastructures énergétiques plus carbonées ou des mix énergétiques nationaux davantage dépendants des énergies fossiles.
+The high emission levels observed in Italy and China can be explained by a significant industrial footprint, more carbon-intensive energy infrastructures, or national energy mixes that remain more dependent on fossil fuels.
 
-À l’inverse, certains pays comme le Royaume-Uni, le Canada ou l’Inde présentent des niveaux d’émissions très faibles dans le périmètre EDF, ce qui peut traduire une présence plus limitée du groupe, des activités moins intensives en carbone ou un portefeuille énergétique davantage orienté vers des énergies bas carbone.
+Conversely, countries such as the United Kingdom, Canada, and India show very low emission levels within EDF’s scope, which may reflect a more limited presence of the Group, less carbon-intensive activities or a more decarbonized energy portfolio.
 
 #### Conclusion
 
-Globalement, les résultats montrent que les émissions carbone du groupe EDF ne sont pas réparties uniformément entre les différents pays d’implantation. Quelques zones géographiques concentrent une part majeure des émissions totales du groupe.
+Overall, the results show that EDF Group’s carbon emissions are not evenly distributed across its countries of operation. A few geographical areas accounting for the majority of total emissions.
 
-### 5.3. France vs Monde
-Comparaison des émissions de la France par rapport au total mondial afin d’analyser son poids relatif.
+### 5.3. France vs World
+Comparison of France's emissions with EDF Group's global emissions to assess its relative contribution.
 
-#### Requêtes SQL principales
-Quelle part des émissions mondiales du groupe EDF est représentée par la France ?
+#### Main SQL Query
+What share of EDF Group's global emissions is represented by France?
 ```sql
 WITH emissions AS (
     SELECT 
@@ -367,24 +367,25 @@ SELECT
 FROM emissions
 ORDER BY "Année";
 ```
-#### Preuves d’exécution (PostgreSQL)
+#### Execution Evidence (PostgreSQL)
 ![France vs Global Emissions Comparison](visuals/france_vs_monde.png)
 
 #### Interpretation
 
-L’analyse comparative entre les émissions françaises et les émissions mondiales du groupe EDF met en évidence une diminution progressive des émissions de CO₂ sur l’ensemble de la période 2019–2024.
+The comparative analysis between French emissions and global emissions of the EDF Group reveals a gradual decrease in CO₂ emissions over the 2019–2024 period.
 
-Les émissions mondiales du groupe passent d’environ 32 249 en 2019 à 16 096 en 2024, traduisant une réduction significative de l’empreinte carbone globale d’EDF. La France suit une tendance similaire avec une baisse des émissions passant de 14 094 à 7 294 sur la même période.
-Malgré cette diminution, la France conserve un poids important dans les émissions totales du groupe. En moyenne, elle représente entre 40 % et 45 % des émissions mondiales d’EDF sur la période étudiée.
+Global emissions decline from approximately 32,249 in 2019 to 16,096 in 2024, reflecting a significant reduction in EDF’s overall carbon footprint. France follows a similar trend, with emissions decreasing from 14,094 to 7,294 over the same period.
 
-Cette concentration peut s’expliquer par l’importance historique du marché français pour EDF, la taille des infrastructures énergétiques nationales et la centralisation d’une partie importante des activités du groupe en France.
+Despite this decline, France continues to represent a substantial share of total Group emissions. On average, it accounts for between 40% and 45% of EDF’s global emissions over the study period.
 
-Les résultats suggèrent également qu’EDF a engagé une trajectoire globale de réduction carbone entre 2019 et 2024, potentiellement liée aux politiques de transition énergétique, à l’évolution du mix énergétique, à la fermeture progressive de certaines activités fortement émettrices ou à l’amélioration des performances environnementales.
+This concentration can be explained by the historical importance of the French market for EDF, the scale of national energy infrastructure, and the centralization of a large share of the Group’s activities in France.
 
-### 5.4. Émissions moyennes par pays
+The results also suggest that EDF has followed a global decarbonization trajectory between 2019 and 2024, likely driven by energy transition policies, changes in the energy mix, the gradual phase-out of carbon-intensive activities, and improved environmental performance.
 
-#### Requêtes SQL principales
-Quels pays présentent les émissions moyennes les plus élevées sur la période étudiée ?
+### 5.4. Average Emissions by Country
+
+#### Main SQL Query
+Which countries recorded the highest average emissions over the study period?
 ```sql
 SELECT "Périmètre spatial", AVG("Emissions CO2") 
 FROM edf_co2
@@ -392,13 +393,13 @@ GROUP BY "Périmètre spatial"
 ORDER BY AVG("Emissions CO2") DESC;
 
 ```
-#### Preuves d’exécution (PostgreSQL)
+#### Execution Evidence (PostgreSQL)
 ![Average CO2 Emissions by Country](visuals/emissions_moyennes_par_pays.png)
 
 ### 5.5. Variations annuelles des émissions
 
-#### Requêtes SQL principales
-Quelles sont les variations annuelles des émissions de CO₂ du groupe EDF ?
+#### Main SQL Query 
+What are the year-over-year changes in EDF Group's CO₂ emissions?
 ```sql
 SELECT 
     "Année",
@@ -412,18 +413,21 @@ GROUP BY "Année"
 ORDER BY "Année";
 ```
 
-#### Preuves d’exécution (PostgreSQL)
+#### Execution Evidence (PostgreSQL)
 ![Annual CO2 Emissions Variations](visuals/variations_annuelles_des_emissions.png)
 
 #### Interpretation
 
-L’analyse de l’évolution des émissions de CO₂ du groupe EDF entre 2019 et 2024 met en évidence une tendance globale fortement baissière, avec une réduction d’environ 48 % sur la période étudiée.
-Cette diminution n’est pas linéaire. Après une forte baisse entre 2019 et 2020, les émissions se stabilisent légèrement en 2021 avant de reprendre une trajectoire descendante plus marquée à partir de 2022.
-L’année 2023 constitue le point le plus significatif de cette dynamique avec une baisse de près de 21 %, traduisant une accélération des efforts de réduction des émissions.
-En 2024, la baisse se poursuit mais à un rythme plus modéré, suggérant une phase de consolidation des gains environnementaux.
+The analysis of EDF Group’s CO₂ emissions between 2019 and 2024 shows an overall strong downward trend, with an approximate reduction of 48% over the period.
+
+This decline is not linear. After a sharp drop between 2019 and 2020, emissions stabilize slightly in 2021 before resuming a more pronounced downward trajectory from 2022 onward.
+
+The year 2023 marks the most significant decrease, with a drop of nearly 21%, indicating an acceleration in emission reduction efforts.
+
+In 2024, the decrease continues but at a more moderate pace, suggesting a consolidation phase of environmental improvements.
 
 #### Conclusion
-Sur la période étudiée, EDF présente une trajectoire de réduction carbone nette et structurée, avec une accélération des efforts à partir de 2022. Cette évolution peut être interprétée comme le résultat combiné de politiques de transition énergétique, d’optimisation des opérations et de transformation progressive du mix énergétique du groupe.
+Over the studied period, EDF exhibits a clear and structured decarbonization trajectory, with an acceleration of efforts starting in 2022. This evolution can be interpreted as the combined result of energy transition policies, operational optimization and a progressive transformation of the Group’s energy mix.
 
 ### 5.6. Top 10 Highest-Emitting Countries (2019–2024)
 
@@ -437,7 +441,7 @@ ORDER BY SUM("Emissions CO2") DESC
 LIMIT 10;
 ```
 
-#### Preuves d’exécution (PostgreSQL)
+#### Execution Evidence (PostgreSQL)
 ![Top 10 Cumulative Emitters 2019-2024](visuals/top_10_emitters_2024.png)
 
 ---
