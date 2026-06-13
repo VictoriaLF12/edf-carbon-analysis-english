@@ -604,7 +604,6 @@ top_countries.to_csv("top_countries_2024.csv", index=False)
 Objective: to save the results for reuse or a dashboard.
 
 ---
----
 
 ## 7. Overall Conclusion
 
