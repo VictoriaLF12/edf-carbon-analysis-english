@@ -71,6 +71,20 @@ CREATE TABLE edf_co2 (
 );
 
 ```
+### Note on the scope of consolidation
+```sql
+SELECT "Année",
+	SUM("Emissions CO2") FILTER (WHERE "Périmètre spatial" != 'Monde') AS sum_pays,
+	SUM("Emissions CO2") FILTER (WHERE "Périmètre spatial" = 'Monde') AS monde,				SUM("Emissions CO2") FILTER (WHERE "Périmètre spatial" != 'Monde')
+	- SUM("Emissions CO2") FILTER (WHERE "Périmètre spatial" = 'Monde') AS ecart 	FROM edf_co2
+GROUP BY "Année"
+ORDER BY "Année";
+```
+
+The "World" scope corresponds to a consolidation of all EDF Group entities. The country-specific data represents a geographical breakdown of emissions according to the scope available in the dataset. Because these two data levels are constructed using different logics, they do not constitute a strictly additive breakdown.
+
+![World Emissions vs Sum of Countries Check](visuals/world_vs_countries_check.png)
+
 ### Execution Evidence (PostgreSQL)
 
 #### Table Creation
@@ -298,9 +312,9 @@ ORDER BY "Année";
 
 #### Interpretation
 
-A gradual and continuous reduction in CO₂ emissions is observed over the entire period.
+A gradual and continuous reduction in CO₂ emissions is observed throughout the period.
 
-This trend may be explained by emissions reduction policies and the strengthening of carbon reporting requirements.
+The causes of this trend cannot be determined from the dataset alone. We can hypothesize that the strengthening of emissions reduction policies and the increase in carbon reporting requirements will lead companies to intensify their decarbonization efforts and improve their mechanisms for measuring and disclosing environmental performance.
 
 #### Conclusion
 
@@ -397,44 +411,47 @@ ORDER BY AVG("Emissions CO2") DESC;
 
 #### Main SQL Query 
 What are the year-over-year changes in EDF Group's CO₂ emissions?
-```sql
-SELECT 
-    "Année",
-    ROUND(SUM("Emissions CO2")::numeric,2) AS emissions_totales,
 
-    ROUND(((SUM("Emissions CO2")
-	        - LAG(SUM("Emissions CO2"))OVER (ORDER BY "Année"))
-			/LAG(SUM("Emissions CO2"))OVER (ORDER BY "Année"))::numeric * 100,2) AS variation_pct
+```sql
+SELECT
+    "Année",
+    ROUND("Emissions CO2"::numeric, 2) AS emissions_totales,
+    ROUND((("Emissions CO2"- LAG("Emissions CO2") OVER (ORDER BY "Année"))
+            /LAG("Emissions CO2") OVER (ORDER BY "Année")* 100)::numeric,2) AS variation_pct
 FROM edf_co2
-GROUP BY "Année"
+WHERE "Périmètre spatial" = 'Monde'
 ORDER BY "Année";
 ```
 
 #### Execution Evidence (PostgreSQL)
 ![Annual CO2 Emissions Variations](visuals/variations_annuelles_des_emissions.png)
 
-#### Interpretation
+#### Interpretation of Results
 
-The analysis of EDF Group’s CO₂ emissions between 2019 and 2024 shows an overall strong downward trend, with an approximate reduction of 48% over the period.
+The analysis of the evolution of EDF Group's CO₂ emissions between 2019 and 2024 highlights a continuous downward trend over the entire period. Global emissions will decrease from 32,248.80 kilotons of CO₂ in 2019 to 16,095.64 kilotons in 2024, representing an overall reduction of approximately 50.1%.
 
-This decline is not linear. After a sharp drop between 2019 and 2020, emissions stabilize slightly in 2021 before resuming a more pronounced downward trajectory from 2022 onward.
+However, this decrease is not uniform from year to year. The first significant drop was observed between 2019 and 2020 (-16.53%). In 2021, emissions stabilized, with a variation limited to -1.18%. From 2022 onwards, the reduction accelerated again with a decrease of 13.24%, followed by the most significant decrease of the period in 2023 (20.93%). In 2024, emissions continued their decline with a further decrease of 11.80%.
 
-The year 2023 marks the most significant decrease, with a drop of nearly 21%, indicating an acceleration in emission reduction efforts.
-
-In 2024, the decrease continues but at a more moderate pace, suggesting a consolidation phase of environmental improvements.
+These results highlight a gradual and sustained reduction in EDF Group's CO₂ emissions over the period studied, with a notable acceleration in the decrease from 2022 onwards.
 
 #### Conclusion
-Over the studied period, EDF exhibits a clear and structured decarbonization trajectory, with an acceleration of efforts starting in 2022. This evolution can be interpreted as the combined result of energy transition policies, operational optimization and a progressive transformation of the Group’s energy mix.
+
+Over the period 2019–2024, the data show a trajectory of net and continuous carbon reduction for the EDF Group. Global emissions were halved in six years, falling from 32,248.80 to 16,095.64 kilotons of CO₂. After a period of relative stability in 2021, the decline in emissions accelerated from 2022 onwards, reaching a particularly sharp point in 2023.
+
+The analysis thus highlights a continuous improvement in the Group's carbon performance over the period studied. However, the available data do not allow for the precise identification of the operational or strategic factors behind this trend. This analysis should therefore be interpreted as an observation of reported emissions trends rather than an explanation of their causes.
 
 ### 5.6. Top 10 Highest-Emitting Countries (2019–2024)
 
 #### Main SQL Query
 Which countries accounted for the highest cumulative CO₂ emissions over the 2019–2024 period?
 ```sql
-SELECT "Périmètre spatial", SUM("Emissions CO2")
+SELECT
+    "Périmètre spatial",
+    ROUND(SUM("Emissions CO2")::numeric,2) AS emissions_cumulees
 FROM edf_co2
+WHERE "Périmètre spatial" <> 'Monde'
 GROUP BY "Périmètre spatial"
-ORDER BY SUM("Emissions CO2") DESC
+ORDER BY emissions_cumulees DESC
 LIMIT 10;
 ```
 
@@ -445,6 +462,148 @@ LIMIT 10;
 
 ## 6. Python Visualizations
 
+This section presents the use of Python to analyze data and complement SQL analyses with dynamic visualizations and an exploratory analysis of EDF Group's CO₂ emissions.
+
+### 6.1. Python Stack Used
+
+| Tool | Use |
+|------|------------|
+| Pandas | Data Manipulation and Aggregation |
+| Matplotlib | Trend Visualization |
+| Seaborn | Advanced Statistical Graphs |
+
+### 6.2. Loading the Data (CSV)
+
+After cleaning and normalizing the data using PostgreSQL (checking for missing values, duplicates, naming inconsistencies, and outliers), the final table was exported to CSV format. This cleaned file was then used in Python to perform the visualizations and exploratory analyses presented in this section.
+
+```python
+import pandas as pd
+
+df = pd.read_csv("emissions-de-co2-consolidees-par-pays-du-groupe-edf.csv")
+
+print(df.head())
+print(df.columns)
+```
+Objective: to verify that the data is loaded correctly and to understand the structure of the dataset.
+
+### 6.3. Global Emissions Trends (2019–2024)
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+world = df[df["Périmètre spatial"] == "Monde"]
+
+world_yearly = world.groupby("Année")["Emissions CO2"].sum().reset_index()
+
+plt.figure(figsize=(10,5))
+sns.lineplot(data=world_yearly, x="Année", y="Emissions CO2", marker="o")
+
+plt.title("Évolution des émissions CO₂ mondiales EDF (2019–2024)")
+plt.ylabel("ktonnes CO₂")
+plt.xlabel("Année")
+plt.grid(True)
+plt.show()
+```
+Objective: This visualization highlights the global trend in The decrease in emissions over the period studied.
+![Global Emissions Trend](visuals/Global_CO2_Emissions_Trend.png)
+
+### 6.4. Top Emitting Countries in 2024
+
+```python
+df_2024 = df[(df["Année"] == 2024) & (df["Périmètre spatial"] != "Monde")]
+
+top_countries = df_2024.sort_values("Emissions CO2", ascending=False).head(10)
+
+plt.figure(figsize=(10,5))
+sns.barplot(data=top_countries, y="Périmètre spatial", x="Emissions CO2")
+
+plt.title("Top 10 pays émetteurs EDF en 2024")
+plt.xlabel("ktonnes CO₂")
+plt.ylabel("")
+plt.show()
+```
+Objective: This analysis shows the concentration of emissions in a limited number of countries.
+
+![Top emitting countries 2024](visuals/Top_CO2_Emitting_Countries_2024.png)
+
+### 6.5. France's Share of Global Emissions
+
+```python
+fr_world = df[df["Périmètre spatial"].isin(["France", "Monde"])]
+
+pivot = fr_world.pivot_table(
+    index="Année",
+    columns="Périmètre spatial",
+    values="Emissions CO2"
+).reset_index()
+
+pivot["Part France (%)"] = (pivot["France"] / pivot["Monde"]) * 100
+
+plt.figure(figsize=(10,5))
+sns.lineplot(data=pivot, x="Année", y="Part France (%)", marker="o")
+
+plt.title("Part des émissions françaises dans le total EDF")
+plt.ylabel("%")
+plt.xlabel("Année")
+plt.grid(True)
+plt.show()
+```
+
+Objective: This visualization allows us to observe The stability of France's share of global emissions for the EDF Group.
+![France's share of emissions](visuals/France_Share_of_Global_Emissions.png)
+
+### 6.6. Distribution of emissions by country (average 2019–2024)
+
+```python
+avg_country = (
+    df[df["Périmètre spatial"] != "Monde"]
+    .groupby("Périmètre spatial")["Emissions CO2"]
+    .mean()
+    .sort_values(ascending=False)
+    .head(10))
+
+plt.figure(figsize=(10,6))
+avg_country.plot(kind="bar")
+
+plt.title("Émissions moyennes par pays (2019–2024)")
+plt.ylabel("ktonnes CO₂")
+plt.xlabel("")
+plt.xticks(rotation=45)
+plt.show()
+```
+Objective: This analysis highlights the countries that are structurally the largest emitters over the period.
+![Average Emissions by Country](visuals/Average_CO2_Emissions_By_Country.png)
+
+### 6.7. Heatmap of Emissions by Country and Year
+
+```python
+pivot_heatmap = df[df["Périmètre spatial"] != "Monde"].pivot_table(
+    index="Périmètre spatial",
+    columns="Année",
+    values="Emissions CO2",
+    aggfunc="sum")
+
+plt.figure(figsize=(12,8))
+sns.heatmap(pivot_heatmap, cmap="Reds")
+
+plt.title("Heatmap des émissions CO₂ EDF par pays et année")
+plt.xlabel("Année")
+plt.ylabel("Pays")
+plt.show()
+```
+Objective: This heatmap allows for a quick visualization of the most emission-intensive geographical areas.
+![CO₂ Emissions Heatmap](visuals/CO2_Emissions_Heatmap.png)
+
+### 6.8. Exporting Analytical Results
+
+```python
+world_yearly.to_csv("world_emissions_trend.csv", index=False)
+top_countries.to_csv("top_countries_2024.csv", index=False)
+```
+Objective: to save the results for reuse or a dashboard.
+
+---
 ---
 
 ## 7. Overall Conclusion
