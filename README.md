@@ -13,7 +13,6 @@ This project analyzes EDF Group’s CO₂ emissions over the 2019–2024 period 
 - France accounted for approximately 40–45% of the Group's total emissions over the period.
 - Emissions are highly concentrated in a limited number of countries.
 - The decline in emissions accelerated from 2022 onwards.
-- The overall trend suggests a gradual transition toward a lower-carbon energy mix.
 
 ---
 
