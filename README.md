@@ -100,7 +100,7 @@ The "World" scope corresponds to a consolidation of all EDF Group entities. The 
 
 ### 4.1. Missing Values Check
 
-#### Objective : Missing Values Check
+#### Objective : Check for missing values
 Identify missing data that could bias statistical analyses and SQL aggregations.
 
 #### SQL Query
@@ -222,7 +222,7 @@ The consistency of measurement units ensures reliable comparisons across countri
 This analysis helps identify the spatial perimeter with the highest emissions, as well as any potential statistical anomalies.
 
 #### SQL Query
-Which spatial perimeter have the highest emissions?
+Which spatial perimeter has the highest emissions?
 ```sql
 SELECT *
 FROM edf_co2
