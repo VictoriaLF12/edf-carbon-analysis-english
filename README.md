@@ -69,8 +69,9 @@ CREATE TABLE edf_co2 (
     "Méthode de consolidation" TEXT,
     "Consolidation method" TEXT
 );
-
 ```
+Note: The original EDF dataset contains French column names which were preserved in the database to maintain consistency with the source data.
+
 ### Note on the scope of consolidation
 ```sql
 SELECT "Année",
